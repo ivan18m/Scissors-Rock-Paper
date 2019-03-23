@@ -37,7 +37,7 @@ class ElementController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|alpha|min:2|max:30|unique:element',
-            'strengths' => 'required|array',
+            'strengths' => 'required|array|min:1',
         ]);
 
         $element = new Element;
