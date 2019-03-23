@@ -2,9 +2,7 @@
 Made with Laravel and Vuetify
 
 ### Installation
-```
-composer install
-```
+
 ```
 git clone https://github.com/ivan18m/Scissors-Rock-Paper.git
 cd Scissors-Rock-Paper
