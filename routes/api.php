@@ -20,4 +20,3 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
 Route::resource('element', 'ElementController');
 
 Route::get('game', 'GameController@index');
-
