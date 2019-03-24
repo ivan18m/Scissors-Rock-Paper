@@ -16,4 +16,4 @@ Route::get('/', function () {
 });
 
 Route::resource('element', 'ElementController');
-
+Route::get('element', 'ElementController@home');

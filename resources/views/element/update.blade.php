@@ -1,21 +1,21 @@
 @extends('layouts.app')
 
 @section('title')
- | Create element
+ | Update element
 @endsection
 
 @section('content')
     <v-container>
         <v-layout justify-center wrap>
             <v-flex xs12>
-                <h1 class="text-xs-center">Create an element</h1>
+                <h1 class="text-xs-center">Update an element</h1>
             </v-flex>
             <v-flex xs12 sm8 md6 lg4>
                 <v-card class="elevation-3">
                     <v-card-text>
                         <v-layout wrap justify-center>
                             <v-flex xs8>
-                                <v-text-field name="name" label="Name" type="text" 
+                                <v-text-field name="name" label="Name" type="text"
                                     data-vv-name="name" data-vv-delay="800" v-model="element.name"
                                     v-validate="'alpha|required'" required autofocus
                                     :error-messages="errors.collect('name')">
@@ -53,7 +53,7 @@
                     </v-card-text>
                     <v-card-actions>
                         <v-layout wrap justify-center>
-                            <v-btn color="primary" v-on:click="submit">Create</v-btn>
+                            <v-btn color="primary" v-on:click="submit">Update</v-btn>
                         </v-layout>
                     </v-card-actions>
                 </v-card>
@@ -70,11 +70,7 @@
         el: "v-app",
         data: {
             processing: false,
-            element: {
-                name: "",
-                strengths: [],
-                weaknesses: []
-            },
+            element: {},
             elements: [],
             errs: {}
         },
@@ -87,6 +83,22 @@
                 };
                 axios.get("/api/element", null, config).then(response => {
                     this.elements = response.data;
+                    var len = this.elements.length;
+                    for(var i = 0; i < len; ++i) {
+                        if(this.elements[i].id == this.element.id) {
+                            this.elements.splice(i, 1);
+                        }
+                    }
+                });
+            },
+            fetchElement() {
+                var config = {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8;"
+                    }
+                };
+                axios.get("/api/element/{{$element->id}}", null, config).then(response => {
+                    this.element = response.data;
                 });
             },
             submit() {
@@ -94,7 +106,6 @@
                     return;
                 } 
                 this.processing = true;
-
 
                 this.$validator.validate().then(valid => {
                     if (!valid) {
@@ -111,15 +122,15 @@
                             return;
                         }
                     }
-                    
+
                     var config = {
                         headers: {
                             "Content-Type": "application/json;charset=utf-8;"
                         }
                     };
-                    axios.post("/api/element", this.element, config)
+                    axios.put("/api/element/{{$element->id}}", this.element, config)
                         .then(response => {
-                            window.location = '/'
+                            window.location = '/';
                             this.processing = false;
                         })
                         .catch(error => {
@@ -132,6 +143,7 @@
             }
         },
         created() {
+            this.fetchElement();
             this.fetchElements();
         }
     });

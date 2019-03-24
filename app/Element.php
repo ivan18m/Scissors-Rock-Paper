@@ -17,4 +17,12 @@ class Element extends Model
     {
         return $this->belongsToMany(\App\Element::class,  'element_strength', 'element_id', 'strength_id');
     }
+
+    /**
+     * @var string
+     */
+    public function weaknesses()
+    {
+        return $this->belongsToMany(\App\Element::class,  'element_strength', 'strength_id', 'element_id');
+    }
 }

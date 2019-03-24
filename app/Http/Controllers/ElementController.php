@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Element;
+use App\ElementStrength;
 
 class ElementController extends Controller
 {
@@ -14,7 +15,17 @@ class ElementController extends Controller
      */
     public function index()
     {
-        return Element::all();
+        return Element::with('strengths')->get();
+    }
+
+    /**
+     * Show the listing view
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function home()
+    {
+        return view("element.list");
     }
 
     /**
@@ -38,12 +49,14 @@ class ElementController extends Controller
         $data = $request->validate([
             'name' => 'required|alpha|min:2|max:30|unique:element',
             'strengths' => 'required|array|min:1',
+            'weaknesses' => 'required|array|min:1',
         ]);
 
         $element = new Element;
         $element->name = $request->name;
         $element->save();
-        $element->strengths()->attach($request->strengths);
+        $element->strengths()->attach($request->strengths); 
+        $element->weaknesses()->attach($request->weaknesses);
 
         return ['status' => 'success'];
     }
@@ -56,7 +69,10 @@ class ElementController extends Controller
      */
     public function show($id)
     {
-        return Element::findOrFail($id);
+        $element = Element::findOrFail($id);
+        $element->strengths = ElementStrength::where('element_id' ,'=' , $element->id)->pluck("strength_id")->toArray();
+        $element->weaknesses = ElementStrength::where('strength_id' ,'=' , $element->id)->pluck("element_id")->toArray();
+        return $element;
     }
 
     /**
@@ -67,7 +83,8 @@ class ElementController extends Controller
      */
     public function edit($id)
     {
-        //return view
+        $element = Element::find($id);
+        return view('element.update')->with('element', $element);; 
     }
 
     /**
@@ -84,12 +101,11 @@ class ElementController extends Controller
             'strengths' => 'required|array',
         ]);
 
-        $element = Place::find($id);
+        $element = Element::find($id);
 
         $element->name = $request->name;
-        $element->strengths()->associate($id, $request->strengths);
-
         $element->save();
+        $element->strengths()->sync($request->strengths);
 
         return ['status' => 'success'];
     }
