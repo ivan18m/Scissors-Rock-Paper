@@ -137,7 +137,7 @@
                             this.errs = error.response.data.errors;
                             this.alert = true;
                             this.processing = false;
-                        });;
+                        });
                 });
 
             }

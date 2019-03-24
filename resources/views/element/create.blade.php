@@ -15,10 +15,17 @@
                     <v-card-text>
                         <v-layout wrap justify-center>
                             <v-flex xs8>
-                                <v-text-field name="name" label="Name" type="text" 
-                                    data-vv-name="name" data-vv-delay="800" v-model="element.name"
-                                    v-validate="'alpha|required'" required autofocus
-                                    :error-messages="errors.collect('name')">
+                                <v-text-field
+                                    v-model="element.name"
+                                    name="name" 
+                                    label="Name" 
+                                    type="text" 
+                                    data-vv-name="name" 
+                                    data-vv-delay="800"
+                                    v-validate="'alpha|required'" 
+                                    :error-messages="errors.collect('name')"
+                                    required autofocus
+                                    >
                                 </v-text-field>
                             </v-flex>
                             <v-flex xs8>
@@ -102,7 +109,7 @@
                         this.processing = false;
                         return;
                     }
-                    
+
                     var len = this.element.strengths.length;
                     for(var i = 0; i < len; ++i) {
                         if(this.element.weaknesses.includes(this.element.strengths[i])) {
@@ -126,7 +133,7 @@
                             this.errs = error.response.data.errors;
                             this.alert = true;
                             this.processing = false;
-                        });;
+                        });
                 });
 
             }
