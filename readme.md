@@ -13,7 +13,7 @@ cp .env.example .env
 ```
 Set up database connection in `.env` file
 
-Seed the database with 3 default elements:
+Migrate and Seed the database with 3 default elements:
 ```
 php artisan migrate --seed
 ```
