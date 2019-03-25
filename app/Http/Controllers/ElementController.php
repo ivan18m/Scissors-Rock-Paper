@@ -104,7 +104,6 @@ class ElementController extends Controller
         ]);
 
         $element = Element::find($id);
-
         $element->name = $request->name;
         $element->save();
         $element->strengths()->sync($request->strengths);
