@@ -20,5 +20,5 @@ php artisan migrate --seed
 
 URL: ```/``` to play the game.
 
-URL: ```/element``` to create or edit an element.
+URL: ```/element``` to create/edit/delete an element.
 

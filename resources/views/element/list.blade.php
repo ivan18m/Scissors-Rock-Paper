@@ -18,6 +18,11 @@
                             <v-list-tile-content>
                                 <v-btn color="primary" block :href="'/element/'+element.id+'/edit'">@{{element.name}}</v-btn>
                             </v-list-tile-content>
+                            <v-list-tile-action>
+                                <v-btn flat fab v-on:click="deleteElement(element.id, index)">
+                                    <v-icon color="red">delete</v-icon>
+                                </v-btn>
+                            </v-list-tile-action>
                         </v-list-tile>
                     </template>
                 </v-list>
@@ -43,6 +48,26 @@
                 axios.get("/api/element", null, config).then(response => {
                     this.elements = response.data;
                 });
+            },
+            deleteElement(id, index) {
+                if (this.processing === true) {
+                    return;
+                } 
+                this.processing = true;
+                if(!confirm("Delete " + this.elements[index].name + "?")) {
+                    this.processing = false;
+                    return;
+                }
+
+                var config = {
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded;charset=utf-8;"
+                    }
+                };
+                axios.delete("/api/element/"+id, null, config).then(response => {
+                    this.elements.splice(index, 1);
+                    this.processing = false;
+                })
             }
         },
         created() {

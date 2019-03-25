@@ -15,7 +15,7 @@ class ElementController extends Controller
      */
     public function index()
     {
-        return Element::with('strengths')->get();
+        return Element::all();
     }
 
     /**
@@ -48,8 +48,8 @@ class ElementController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|alpha|min:2|max:30|unique:element',
-            'strengths' => 'required|array|min:1',
-            'weaknesses' => 'required|array|min:1',
+            'strengths' => 'array',
+            'weaknesses' => 'array',
         ]);
 
         $element = new Element;
@@ -83,7 +83,9 @@ class ElementController extends Controller
      */
     public function edit($id)
     {
-        $element = Element::find($id);
+        $element = Element::findOrFail($id);
+        $element->strengths = ElementStrength::where('element_id' ,'=' , $element->id)->pluck("strength_id");
+        $element->weaknesses = ElementStrength::where('strength_id' ,'=' , $element->id)->pluck("element_id");
         return view('element.update')->with('element', $element);; 
     }
 
@@ -98,7 +100,7 @@ class ElementController extends Controller
     {
         $data = $request->validate([
             'name' => 'required|string|min:2|max:30',
-            'strengths' => 'required|array',
+            'strengths' => 'array',
         ]);
 
         $element = Element::find($id);

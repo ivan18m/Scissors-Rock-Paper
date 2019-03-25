@@ -3,6 +3,7 @@
 @include('inc.head')
 <body>
     <v-app v-cloak>
+        @include('inc.toolbar')
         <v-content>
             @yield('content')
         </v-content>

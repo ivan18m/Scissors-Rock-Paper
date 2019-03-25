@@ -126,7 +126,7 @@
                     };
                     axios.post("/api/element", this.element, config)
                         .then(response => {
-                            window.location = '/'
+                            window.location = '/element'
                             this.processing = false;
                         })
                         .catch(error => {

@@ -6,7 +6,7 @@
 
 @section('content')
     <v-container>
-        <v-layout align-center justify-center my-5>
+        <v-layout align-center justify-center mb-5 mt-2>
             <h1>Pick</h1>
         </v-layout>
 
@@ -119,7 +119,6 @@
                         this.alert = true;
                         this.processing = false;
                     });
-
             }
         },
         created() {

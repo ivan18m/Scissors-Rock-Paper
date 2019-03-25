@@ -15,12 +15,9 @@ class GameController extends Controller
             'id' => 'required|integer|exists:element,id',
         ]);
 
-        $maxID = \DB::table('element')->max('id');
-
-        $randomID = mt_rand(1, $maxID);
-        $randomElement = Element::find($randomID);
-
-        $result = Result::getResult($request->id, $randomID);
+        $randomElement = Element::inRandomOrder()->first();
+        
+        $result = Result::getResult($request->id, $randomElement->id);
         
         return ["element" => $randomElement, "result" => $result];
     }
